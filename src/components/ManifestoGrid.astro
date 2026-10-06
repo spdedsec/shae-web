@@ -1,0 +1,151 @@
+---
+// ManifestoGrid.astro - Rigorous Swiss Multi-Column Grid
+---
+
+<section id="manifesto" class="relative w-full border-b border-[#2E2E2E] bg-[#080808]" aria-labelledby="manifesto-heading">
+  <!-- Crosshair markers at section corners -->
+  <span class="absolute top-2 left-2 font-mono text-xs text-[#555555] select-none pointer-events-none" aria-hidden="true">+</span>
+  <span class="absolute top-2 right-2 font-mono text-xs text-[#555555] select-none pointer-events-none" aria-hidden="true">+</span>
+  <span class="absolute bottom-2 left-2 font-mono text-xs text-[#555555] select-none pointer-events-none" aria-hidden="true">+</span>
+  <span class="absolute bottom-2 right-2 font-mono text-xs text-[#555555] select-none pointer-events-none" aria-hidden="true">+</span>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+    <!-- Header Banner -->
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-[#2E2E2E] pb-6 mb-8 gap-4">
+      <div>
+        <div class="font-mono text-xs tracking-widest uppercase text-[#888888] mb-1">
+          [SECTION // 02] // SYSTEM MANIFESTO &amp; TELEMETRY
+        </div>
+        <h2 id="manifesto-heading" class="text-3xl sm:text-4xl md:text-5xl font-black font-sans uppercase tracking-tightest text-[#F5F5F5]">
+          SWISS GRID SPECIFICATION
+        </h2>
+      </div>
+      <div class="font-mono text-xs tracking-widest text-[#777777] uppercase">
+        AXIS: STRICT_HAIRLINE // 3_COLUMN_DIVISION
+      </div>
+    </div>
+
+    <!-- 3-Column Swiss Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 border border-[#2E2E2E] divide-y lg:divide-y-0 lg:divide-x divide-[#2E2E2E] bg-[#0A0A0A]">
+      <!-- Column 1: Philosophy -->
+      <article class="p-6 sm:p-8 flex flex-col justify-between relative group hover:bg-[#101010] transition-none" aria-labelledby="col-philosophy-title">
+        <span class="absolute top-0 right-0 p-2 font-mono text-[10px] text-[#404040] select-none">+</span>
+        <div>
+          <div class="flex items-center justify-between font-mono text-xs tracking-widest text-[#888888] uppercase mb-4 pb-2 border-b border-[#181818]">
+            <span class="text-[#F5F5F5] font-bold">001 // PHILOSOPHY</span>
+            <span>DOCTRINE</span>
+          </div>
+
+          <h3 id="col-philosophy-title" class="text-xl sm:text-2xl font-bold font-sans uppercase tracking-tight text-[#F5F5F5] mb-4">
+            THE POST-CEREMONY DOCTRINE
+          </h3>
+
+          <p class="text-sm leading-relaxed text-[#CCCCCC] mb-4 font-sans">
+            Most modern languages trap engineers between tedious extremes. Python offers approachability at the expense of runtime fragmentation and the GIL. Rust provides unyielding performance while enforcing intellectual marathons over trivial prototypes. Go demands endless repetitions of identical error checks.
+          </p>
+
+          <p class="text-sm leading-relaxed text-[#999999] mb-6 font-sans">
+            <strong class="text-[#F5F5F5]">Shae</strong> occupies the uncompromised sweet spot. Zero semicolons. No boilerplate parentheses. Built to compile rapidly, execute without baggage, and step out of your thought process. Write code, ship it, touch grass.
+          </p>
+        </div>
+
+        <div class="pt-4 border-t border-[#181818] font-mono text-[11px] tracking-widest text-[#777777] uppercase flex items-center justify-between">
+          <span>PARADIGM // PRAGMATIC</span>
+          <span class="text-[#F5F5F5] font-bold">[VERIFIED]</span>
+        </div>
+      </article>
+
+      <!-- Column 2: Specifications -->
+      <article id="specs" class="p-6 sm:p-8 flex flex-col justify-between relative group hover:bg-[#101010] transition-none" aria-labelledby="col-specs-title">
+        <span class="absolute top-0 right-0 p-2 font-mono text-[10px] text-[#404040] select-none">+</span>
+        <div>
+          <div class="flex items-center justify-between font-mono text-xs tracking-widest text-[#888888] uppercase mb-4 pb-2 border-b border-[#181818]">
+            <span class="text-[#F5F5F5] font-bold">002 // SPECIFICATIONS</span>
+            <span>ARCHITECTURE</span>
+          </div>
+
+          <h3 id="col-specs-title" class="text-xl sm:text-2xl font-bold font-sans uppercase tracking-tight text-[#F5F5F5] mb-4">
+            MECHANICAL ARCHITECTURE
+          </h3>
+
+          <ul class="flex flex-col gap-3 font-mono text-xs text-[#CCCCCC] mb-6">
+            <li class="p-2.5 bg-[#080808] border border-[#222222] flex flex-col gap-1">
+              <span class="text-[#F5F5F5] font-bold">[01] NATIVE HTTP DAEMON</span>
+              <span class="text-[#888888]">5-line asynchronous web server baked directly into the core runtime without npm or crates.</span>
+            </li>
+            <li class="p-2.5 bg-[#080808] border border-[#222222] flex flex-col gap-1">
+              <span class="text-[#F5F5F5] font-bold">[02] CONCURRENCY KERNEL</span>
+              <span class="text-[#888888]">Fire-and-forget OS threads via the <code class="text-[#F5F5F5]">spawn()</code> intrinsic with lock-free channel messaging.</span>
+            </li>
+            <li class="p-2.5 bg-[#080808] border border-[#222222] flex flex-col gap-1">
+              <span class="text-[#F5F5F5] font-bold">[03] PIPE PIPELINES</span>
+              <span class="text-[#888888]">Elixir-style pipe operator (<code class="text-[#F5F5F5]">|&gt;</code>) for clean, readable left-to-right data transformations.</span>
+            </li>
+            <li class="p-2.5 bg-[#080808] border border-[#222222] flex flex-col gap-1">
+              <span class="text-[#F5F5F5] font-bold">[04] HUMAN DIAGNOSTICS</span>
+              <span class="text-[#888888]"><code class="text-[#F5F5F5]">shae check</code> static linter offering witty, empathetic guidance instead of pedantic lectures.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="pt-4 border-t border-[#181818] font-mono text-[11px] tracking-widest text-[#777777] uppercase flex items-center justify-between">
+          <span>COMPILER // RUST_AOT</span>
+          <span class="text-[#F5F5F5] font-bold">[ACTIVE]</span>
+        </div>
+      </article>
+
+      <!-- Column 3: Contact & Coordinates -->
+      <article id="telemetry" class="p-6 sm:p-8 flex flex-col justify-between relative group hover:bg-[#101010] transition-none" aria-labelledby="col-contact-title">
+        <span class="absolute top-0 right-0 p-2 font-mono text-[10px] text-[#404040] select-none">+</span>
+        <div>
+          <div class="flex items-center justify-between font-mono text-xs tracking-widest text-[#888888] uppercase mb-4 pb-2 border-b border-[#181818]">
+            <span class="text-[#F5F5F5] font-bold">003 // TELEMETRY</span>
+            <span>DISPATCH</span>
+          </div>
+
+          <h3 id="col-contact-title" class="text-xl sm:text-2xl font-bold font-sans uppercase tracking-tight text-[#F5F5F5] mb-4">
+            COORDINATES &amp; CHANNELS
+          </h3>
+
+          <div class="flex flex-col gap-2 font-mono text-xs text-[#888888] mb-6">
+            <div class="flex justify-between py-1.5 border-b border-[#181818]">
+              <span>CREATOR // LEAD</span>
+              <a href="https://github.com/spdedsec" target="_blank" rel="noopener noreferrer" class="text-[#F5F5F5] hover:underline font-bold">@spdedsec</a>
+            </div>
+            <div class="flex justify-between py-1.5 border-b border-[#181818]">
+              <span>SOURCE // TREE</span>
+              <a href="https://github.com/spdedsec/shae" target="_blank" rel="noopener noreferrer" class="text-[#F5F5F5] hover:underline font-bold">github.com/spdedsec/shae</a>
+            </div>
+            <div class="flex justify-between py-1.5 border-b border-[#181818]">
+              <span>RELEASE // TAG</span>
+              <span class="text-[#F5F5F5]">v0.1.0-alpha.4</span>
+            </div>
+            <div class="flex justify-between py-1.5 border-b border-[#181818]">
+              <span>GEO_LOC // GRID</span>
+              <span class="text-[#F5F5F5]">45°18'N 9°10'E // LAB_01</span>
+            </div>
+            <div class="flex justify-between py-1.5 border-b border-[#181818]">
+              <span>LICENSE // TERMS</span>
+              <span class="text-[#F5F5F5]">MIT // PERMISSIVE</span>
+            </div>
+          </div>
+
+          <p class="text-xs text-[#777777] font-mono uppercase mb-4">
+            OPEN TRANSMISSION CHANNEL FOR BUG REPORTS, RFC PROPOSALS, AND LANGUAGE PR SPECIFICATIONS.
+          </p>
+        </div>
+
+        <div class="pt-4 border-t border-[#181818] flex flex-col gap-2">
+          <a
+            href="https://github.com/spdedsec/shae/issues"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-full py-3 px-4 bg-[#F5F5F5] text-[#000000] font-mono text-xs font-bold tracking-widest uppercase text-center hover:bg-[#FFFFFF] hover:opacity-90 transition-none select-none"
+          >
+            DISPATCH RFC // ISSUE
+          </a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,95 @@
+---
+// Footer.astro - Swiss Technical Footer with Machine Clock & Coordinates
+---
+
+<footer class="relative w-full border-t border-[#2E2E2E] bg-[#080808] text-[#F5F5F5] select-none" aria-label="Technical Footer">
+  <!-- Crosshairs -->
+  <span class="absolute top-2 left-2 font-mono text-xs text-[#555555] pointer-events-none" aria-hidden="true">+</span>
+  <span class="absolute top-2 right-2 font-mono text-xs text-[#555555] pointer-events-none" aria-hidden="true">+</span>
+
+  <!-- Upper Technical Ledger Strip -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 border-b border-[#181818]">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 font-mono text-xs uppercase tracking-widest text-[#888888]">
+      <div class="flex flex-col gap-1">
+        <span class="text-[#555555] text-[10px]">ORGANIZATION // DIRECTORY</span>
+        <span class="text-[#F5F5F5] font-bold">SHAE ARCHITECTURE LABS</span>
+        <span class="text-[#777777] text-[11px]">FOUNDED 2026 // OPEN SOURCE</span>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <span class="text-[#555555] text-[10px]">ENGINEERING CREDITS</span>
+        <span class="text-[#F5F5F5] font-bold">SPDESSEC // ARCHITECT</span>
+        <a href="https://github.com/spdedsec/shae" target="_blank" rel="noopener noreferrer" class="text-[#AAAAAA] hover:text-[#FFFFFF] underline text-[11px]">
+          GITHUB REPOSITORY
+        </a>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <span class="text-[#555555] text-[10px]">TELEMETRY TIME READOUT</span>
+        <span id="footer-machine-clock" class="text-[#F5F5F5] font-bold">
+          [SYS_CLOCK: --:--:--]
+        </span>
+        <span class="text-[#777777] text-[11px]">SYNCHRONIZED WITH LOCAL OS</span>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <span class="text-[#555555] text-[10px]">GEOGRAPHIC COORDINATES</span>
+        <span class="text-[#F5F5F5] font-bold">45°18'N 9°10'E</span>
+        <span class="text-[#777777] text-[11px]">DATUM: WGS84 // GRID: 1-BIT</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lower Strip: Copyright, Disclaimer & Return to Top -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs tracking-widest uppercase">
+    <div class="flex items-center gap-3 text-[#777777]">
+      <span class="w-2 h-2 bg-[#F5F5F5] inline-block animate-pixel-blink"></span>
+      <span>&copy; 2026 SHAE. ALL RIGHTS RESERVED. MIT LICENSE.</span>
+    </div>
+
+    <!-- Return to Top Button -->
+    <button
+      id="return-to-top-btn"
+      class="px-4 py-2 bg-[#121212] border border-[#2E2E2E] text-[#F5F5F5] hover:bg-white hover:text-black transition-none flex items-center gap-2 font-bold cursor-pointer select-none"
+      aria-label="Return to top of page"
+    >
+      <span>&uarr;</span>
+      <span>RETURN TO TOP</span>
+    </button>
+  </div>
+</footer>
+
+<script>
+  // Live machine time readout and smooth scroll to top
+  function initFooter() {
+    const clockEl = document.getElementById('footer-machine-clock');
+    const returnBtn = document.getElementById('return-to-top-btn');
+
+    function updateClock() {
+      if (!clockEl) return;
+      const now = new Date();
+      const hrs = now.getHours().toString().padStart(2, '0');
+      const min = now.getMinutes().toString().padStart(2, '0');
+      const sec = now.getSeconds().toString().padStart(2, '0');
+      const ms = Math.floor(now.getMilliseconds() / 10).toString().padStart(2, '0');
+      clockEl.textContent = `[SYS_CLOCK: ${hrs}:${min}:${sec}.${ms}]`;
+    }
+
+    const clockTimer = setInterval(updateClock, 80);
+    updateClock();
+
+    returnBtn?.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+
+    document.addEventListener('astro:before-swap', () => {
+      clearInterval(clockTimer);
+    }, { once: true });
+  }
+
+  initFooter();
+  document.addEventListener('astro:page-load', initFooter);
+</script>

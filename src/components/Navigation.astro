@@ -1,0 +1,78 @@
+---
+// Navigation.astro - Swiss Brutalist Navigation Bar
+---
+
+<header class="sticky top-0 z-50 w-full bg-[#080808]/95 backdrop-blur-none border-b border-[#2E2E2E]">
+  <!-- Top micro-ticker hairline banner -->
+  <div class="hidden md:flex justify-between items-center px-4 py-1 border-b border-[#181818] font-mono text-[10px] tracking-widest text-[#888888] uppercase select-none">
+    <div class="flex items-center gap-3">
+      <span>SYS_NODE // 0x7F000001</span>
+      <span class="text-[#404040]">|</span>
+      <span>ARCH // x86_64_POSIX</span>
+      <span class="text-[#404040]">|</span>
+      <span>MEMORY // LEAN_ARENA</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <span>SPEC // 2026.04.REC</span>
+      <span class="text-[#404040]">+</span>
+      <span>LATENCY // &lt;0.4ms</span>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto flex items-stretch justify-between h-14 md:h-16 relative">
+    <!-- Left: Wordmark SHAE -->
+    <a
+      href="/"
+      class="flex items-center gap-2 px-4 md:px-6 border-r border-[#2E2E2E] bg-[#080808] text-[#F5F5F5] font-sans font-black text-2xl md:text-3xl tracking-tightest uppercase hover:bg-white hover:text-black transition-none select-none group"
+      aria-label="SHAE Home"
+    >
+      <span class="relative">SHAE</span>
+      <span class="font-mono text-[9px] tracking-widest px-1.5 py-0.5 border border-[#404040] group-hover:border-black text-[#888888] group-hover:text-black uppercase">
+        v0.1.0
+      </span>
+    </a>
+
+    <!-- Center: Live Status Indicator with Flashing Square Pixel LED -->
+    <div class="hidden sm:flex items-center justify-center gap-3 px-4 md:px-8 font-mono text-xs tracking-widest uppercase text-[#F5F5F5] select-none">
+      <span class="inline-block w-2.5 h-2.5 bg-[#F5F5F5] animate-pixel-blink" aria-hidden="true"></span>
+      <span class="text-[#F5F5F5]">[STATUS: ACTIVE // 2026]</span>
+    </div>
+
+    <!-- Right: Monospace Navigation Links with instant invert -->
+    <nav class="flex items-stretch font-mono text-xs tracking-widest uppercase" aria-label="Main Navigation">
+      <a
+        href="#manifesto"
+        class="hidden lg:flex items-center px-5 border-l border-[#2E2E2E] text-[#F5F5F5] hover:bg-white hover:text-black transition-none select-none"
+      >
+        01 // PHILOSOPHY
+      </a>
+      <a
+        href="#specs"
+        class="hidden md:flex items-center px-5 border-l border-[#2E2E2E] text-[#F5F5F5] hover:bg-white hover:text-black transition-none select-none"
+      >
+        02 // SYSTEM
+      </a>
+      <a
+        href="#archive"
+        class="flex items-center px-4 md:px-5 border-l border-[#2E2E2E] text-[#F5F5F5] hover:bg-white hover:text-black transition-none select-none"
+      >
+        03 // ARCHIVE
+      </a>
+      <a
+        href="#telemetry"
+        class="flex items-center px-4 md:px-5 border-l border-[#2E2E2E] text-[#F5F5F5] hover:bg-white hover:text-black transition-none select-none"
+      >
+        04 // CONTACT
+      </a>
+      <a
+        href="https://github.com/spdedsec/shae"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center px-4 md:px-6 bg-[#181818] border-l border-[#2E2E2E] text-[#F5F5F5] font-bold hover:bg-white hover:text-black transition-none select-none"
+        aria-label="GitHub Repository"
+      >
+        [GIT]
+      </a>
+    </nav>
+  </div>
+</header>

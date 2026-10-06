@@ -1,0 +1,281 @@
+---
+// DitherCanvas.astro - 1-Bit Bayer Matrix Thresholding Engine
+interface Props {
+  className?: string;
+  id?: string;
+}
+
+const { className = "", id = "dither-section" } = Astro.props;
+---
+
+<section id={id} class={`relative w-full border-b border-[#2E2E2E] bg-[#080808] ${className}`} aria-labelledby="dither-heading">
+  <!-- Bounding crosshair anchors -->
+  <span class="absolute top-2 left-2 font-mono text-xs text-[#555555] select-none pointer-events-none" aria-hidden="true">+</span>
+  <span class="absolute top-2 right-2 font-mono text-xs text-[#555555] select-none pointer-events-none" aria-hidden="true">+</span>
+  <span class="absolute bottom-2 left-2 font-mono text-xs text-[#555555] select-none pointer-events-none" aria-hidden="true">+</span>
+  <span class="absolute bottom-2 right-2 font-mono text-xs text-[#555555] select-none pointer-events-none" aria-hidden="true">+</span>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
+    <!-- Component Telemetry Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#2E2E2E] pb-4 mb-6 font-mono text-xs tracking-widest uppercase">
+      <div class="flex items-center gap-3">
+        <span class="w-2.5 h-2.5 bg-[#F5F5F5] inline-block animate-pixel-blink"></span>
+        <h2 id="dither-heading" class="text-sm font-bold text-[#F5F5F5] font-sans tracking-tight">
+          PROCEDURAL 1-BIT DITHER MATRIX // BAYER 8X8
+        </h2>
+      </div>
+      <div class="flex flex-wrap items-center gap-4 text-[#888888]">
+        <span id="dither-fps">[FPS: 60]</span>
+        <span class="text-[#404040]">|</span>
+        <span id="dither-coords">[X: 000 // Y: 000]</span>
+        <span class="text-[#404040]">|</span>
+        <span id="dither-mode-label">[MODE: HARMONIC_SINE]</span>
+      </div>
+    </div>
+
+    <!-- Main Canvas Enclosure -->
+    <div class="relative w-full border border-[#2E2E2E] bg-[#000000] overflow-hidden select-none">
+      <!-- Crosshair overlays -->
+      <div class="absolute inset-0 pointer-events-none z-10 border border-[#2E2E2E]/40 grid grid-cols-4 grid-rows-3">
+        <div class="border-r border-b border-[#2E2E2E]/30 relative"><span class="absolute bottom-0 right-0 font-mono text-[9px] text-[#404040] translate-x-1/2 translate-y-1/2">+</span></div>
+        <div class="border-r border-b border-[#2E2E2E]/30 relative"><span class="absolute bottom-0 right-0 font-mono text-[9px] text-[#404040] translate-x-1/2 translate-y-1/2">+</span></div>
+        <div class="border-r border-b border-[#2E2E2E]/30 relative"><span class="absolute bottom-0 right-0 font-mono text-[9px] text-[#404040] translate-x-1/2 translate-y-1/2">+</span></div>
+        <div class="border-b border-[#2E2E2E]/30"></div>
+        <div class="border-r border-b border-[#2E2E2E]/30 relative"><span class="absolute bottom-0 right-0 font-mono text-[9px] text-[#404040] translate-x-1/2 translate-y-1/2">+</span></div>
+        <div class="border-r border-b border-[#2E2E2E]/30 relative"><span class="absolute bottom-0 right-0 font-mono text-[9px] text-[#404040] translate-x-1/2 translate-y-1/2">+</span></div>
+        <div class="border-r border-b border-[#2E2E2E]/30 relative"><span class="absolute bottom-0 right-0 font-mono text-[9px] text-[#404040] translate-x-1/2 translate-y-1/2">+</span></div>
+        <div class="border-b border-[#2E2E2E]/30"></div>
+        <div class="border-r border-[#2E2E2E]/30"></div>
+        <div class="border-r border-[#2E2E2E]/30"></div>
+        <div class="border-r border-[#2E2E2E]/30"></div>
+        <div></div>
+      </div>
+
+      <!-- Native 2D Canvas with pixelated rendering -->
+      <canvas
+        id="dither-canvas"
+        class="w-full h-64 sm:h-80 md:h-96 lg:h-[420px] block cursor-crosshair"
+        style="image-rendering: pixelated; image-rendering: crisp-edges;"
+      ></canvas>
+
+      <!-- Center HUD Prompt -->
+      <div class="absolute bottom-3 left-3 z-20 pointer-events-none font-mono text-[10px] tracking-widest text-[#AAAAAA] uppercase bg-[#080808]/90 px-2.5 py-1 border border-[#2E2E2E]">
+        CURSOR INTERACTION: PERTURB THRESHOLD VECTOR
+      </div>
+    </div>
+
+    <!-- Control Tray Bar -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-0 border-x border-b border-[#2E2E2E] divide-x divide-[#2E2E2E] font-mono text-xs uppercase bg-[#0D0D0D]">
+      <button
+        id="btn-mode-sine"
+        class="p-3 text-center text-[#F5F5F5] hover:bg-white hover:text-black transition-none select-none font-bold"
+      >
+        01 // HARMONIC SINE
+      </button>
+      <button
+        id="btn-mode-vortex"
+        class="p-3 text-center text-[#F5F5F5] hover:bg-white hover:text-black transition-none select-none font-bold"
+      >
+        02 // VORTEX GRAVITY
+      </button>
+      <button
+        id="btn-mode-noise"
+        class="p-3 text-center text-[#F5F5F5] hover:bg-white hover:text-black transition-none select-none font-bold"
+      >
+        03 // TURBULENCE
+      </button>
+      <button
+        id="btn-invert"
+        class="p-3 text-center text-[#F5F5F5] hover:bg-white hover:text-black transition-none select-none font-bold"
+      >
+        04 // INVERT POLARITY
+      </button>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Pure native 2D canvas Bayer 8x8 dithering engine
+  function initDitherCanvas() {
+    const canvas = document.getElementById('dither-canvas') as HTMLCanvasElement | null;
+    const fpsLabel = document.getElementById('dither-fps');
+    const coordsLabel = document.getElementById('dither-coords');
+    const modeLabel = document.getElementById('dither-mode-label');
+
+    const btnSine = document.getElementById('btn-mode-sine');
+    const btnVortex = document.getElementById('btn-mode-vortex');
+    const btnNoise = document.getElementById('btn-mode-noise');
+    const btnInvert = document.getElementById('btn-invert');
+
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d', { alpha: false });
+    if (!ctx) return;
+
+    // Bayer 8x8 Normalized Threshold Matrix (0 to 63)
+    const BAYER_8X8 = [
+      [ 0, 32,  8, 40,  2, 34, 10, 42],
+      [48, 16, 56, 24, 50, 18, 58, 26],
+      [12, 44,  4, 36, 14, 46,  6, 38],
+      [60, 28, 52, 20, 62, 30, 54, 22],
+      [ 3, 35, 11, 43,  1, 33,  9, 41],
+      [51, 19, 59, 27, 49, 17, 57, 25],
+      [15, 47,  7, 39, 13, 45,  5, 37],
+      [63, 31, 55, 23, 61, 29, 53, 21]
+    ];
+
+    // Low-resolution raster grid for microscopic CPU footprint and authentic retro pixelation
+    const RASTER_W = 192;
+    const RASTER_H = 96;
+
+    canvas.width = RASTER_W;
+    canvas.height = RASTER_H;
+
+    const imgData = ctx.createImageData(RASTER_W, RASTER_H);
+    const buf32 = new Uint32Array(imgData.data.buffer);
+
+    let mode: 'sine' | 'vortex' | 'noise' = 'sine';
+    let inverted = false;
+
+    // Mouse coordinates mapped to internal raster
+    let mouseX = RASTER_W / 2;
+    let mouseY = RASTER_H / 2;
+    let isHovering = false;
+
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = RASTER_W / rect.width;
+      const scaleY = RASTER_H / rect.height;
+      mouseX = (e.clientX - rect.left) * scaleX;
+      mouseY = (e.clientY - rect.top) * scaleY;
+      isHovering = true;
+
+      if (coordsLabel) {
+        coordsLabel.textContent = `[X: ${Math.round(mouseX).toString().padStart(3, '0')} // Y: ${Math.round(mouseY).toString().padStart(3, '0')}]`;
+      }
+    });
+
+    canvas.addEventListener('mouseleave', () => {
+      isHovering = false;
+      if (coordsLabel) {
+        coordsLabel.textContent = `[X: OFF // Y: OFF]`;
+      }
+    });
+
+    // Color definitions (Little-endian ABGR: 0xAABBGGRR)
+    const COLOR_BLACK = 0xFF080808;
+    const COLOR_WHITE = 0xFFF5F5F5;
+
+    let time = 0;
+    let lastTime = performance.now();
+    let frameCount = 0;
+    let lastFpsUpdate = performance.now();
+    let animId: number;
+    let isVisible = true;
+
+    // IntersectionObserver to pause when off-screen (0 CPU overhead)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        isVisible = entry.isIntersecting;
+      });
+    }, { threshold: 0.05 });
+    observer.observe(canvas);
+
+    function render(now: number) {
+      animId = requestAnimationFrame(render);
+      if (!isVisible) return;
+
+      const delta = (now - lastTime) * 0.001;
+      lastTime = now;
+      time += delta * 1.5;
+
+      frameCount++;
+      if (now - lastFpsUpdate >= 500) {
+        const fps = Math.round((frameCount * 1000) / (now - lastFpsUpdate));
+        if (fpsLabel) fpsLabel.textContent = `[FPS: ${fps}]`;
+        frameCount = 0;
+        lastFpsUpdate = now;
+      }
+
+      // Autonomous gentle cursor drift if idle
+      const effectiveMouseX = isHovering ? mouseX : RASTER_W / 2 + Math.sin(time * 0.8) * (RASTER_W * 0.25);
+      const effectiveMouseY = isHovering ? mouseY : RASTER_H / 2 + Math.cos(time * 0.6) * (RASTER_H * 0.25);
+
+      const colHigh = inverted ? COLOR_BLACK : COLOR_WHITE;
+      const colLow = inverted ? COLOR_WHITE : COLOR_BLACK;
+
+      let idx = 0;
+      for (let y = 0; y < RASTER_H; y++) {
+        const bayerRow = BAYER_8X8[y & 7];
+        const dy = y - effectiveMouseY;
+
+        for (let x = 0; x < RASTER_W; x++) {
+          const dx = x - effectiveMouseX;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          let intensity = 0;
+
+          if (mode === 'sine') {
+            // Complex multi-frequency interference waves
+            const w1 = Math.sin(x * 0.08 + time * 1.2);
+            const w2 = Math.cos(y * 0.12 - time * 0.9);
+            const w3 = Math.sin((x + y) * 0.05 + time * 0.7);
+            const ripple = Math.sin(dist * 0.35 - time * 3.5) / (1.0 + dist * 0.08);
+
+            intensity = (w1 + w2 + w3 + ripple * 2.0 + 3.0) / 6.0;
+          } else if (mode === 'vortex') {
+            // Rotational vortex field
+            const angle = Math.atan2(dy, dx);
+            const spiral = Math.sin(angle * 4.0 + dist * 0.2 - time * 2.5);
+            const concentric = Math.cos(dist * 0.15 - time);
+            intensity = (spiral * 0.5 + concentric * 0.5 + 1.0) * 0.5;
+          } else {
+            // High frequency harmonic turbulence
+            const n1 = Math.sin(x * 0.15 + Math.cos(y * 0.1 + time));
+            const n2 = Math.cos(y * 0.15 + Math.sin(x * 0.1 + time));
+            const mouseEffect = Math.exp(-dist / 22.0) * Math.cos(dist * 0.5 - time * 4.0);
+            intensity = (n1 + n2 + mouseEffect * 1.5 + 2.5) / 5.0;
+          }
+
+          // Scale intensity to [0, 63]
+          const scaledInt = intensity * 64;
+          const threshold = bayerRow[x & 7];
+
+          buf32[idx++] = scaledInt > threshold ? colHigh : colLow;
+        }
+      }
+
+      ctx.putImageData(imgData, 0, 0);
+    }
+
+    animId = requestAnimationFrame(render);
+
+    // Mode Buttons
+    btnSine?.addEventListener('click', () => {
+      mode = 'sine';
+      if (modeLabel) modeLabel.textContent = '[MODE: HARMONIC_SINE]';
+    });
+    btnVortex?.addEventListener('click', () => {
+      mode = 'vortex';
+      if (modeLabel) modeLabel.textContent = '[MODE: VORTEX_GRAVITY]';
+    });
+    btnNoise?.addEventListener('click', () => {
+      mode = 'noise';
+      if (modeLabel) modeLabel.textContent = '[MODE: TURBULENCE]';
+    });
+    btnInvert?.addEventListener('click', () => {
+      inverted = !inverted;
+      if (btnInvert) {
+        btnInvert.textContent = inverted ? '04 // RESTORE POLARITY' : '04 // INVERT POLARITY';
+      }
+    });
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animId);
+      observer.disconnect();
+    }, { once: true });
+  }
+
+  initDitherCanvas();
+  document.addEventListener('astro:page-load', initDitherCanvas);
+</script>

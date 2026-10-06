@@ -1,0 +1,32 @@
+---
+import RootLayout from '../layouts/RootLayout.astro';
+import Navigation from '../components/Navigation.astro';
+import Hero from '../components/Hero.astro';
+import DitherCanvas from '../components/DitherCanvas.astro';
+import ManifestoGrid from '../components/ManifestoGrid.astro';
+import ArchiveList from '../components/ArchiveList.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<RootLayout
+  title="SHAE // SWISS BRUTALIST 1-BIT SYSTEM"
+  description="Official portal for Shae: A programming language that runs, does work, and leaves you alone. Swiss International Typographic Style fused with 1-bit Bayer ditherpunk aesthetics."
+>
+  <Navigation />
+  
+  <main id="main-content" class="w-full flex flex-col">
+    <!-- Hero with Massive Typographic Statement & Kinetic Stepped Reveal -->
+    <Hero />
+
+    <!-- 1-Bit Dynamic Bayer Matrix Thresholding Canvas Module -->
+    <DitherCanvas />
+
+    <!-- 3-Column Swiss Manifesto Grid: Philosophy, Architecture & Coordinates -->
+    <ManifestoGrid />
+
+    <!-- Technical Spec Ledger & Syntax Code Archive -->
+    <ArchiveList />
+  </main>
+
+  <Footer />
+</RootLayout>

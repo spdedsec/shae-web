@@ -1,0 +1,162 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    border-radius: 0 !important;
+  }
+
+  ::selection {
+    background-color: #ffffff;
+    color: #000000;
+  }
+
+  ::-moz-selection {
+    background-color: #ffffff;
+    color: #000000;
+  }
+
+  html {
+    background-color: #080808;
+    color: #f5f5f5;
+    font-family: 'Helvetica Neue', Helvetica, 'Neue Haas Grotesk Text Pro', Arial, -apple-system, sans-serif;
+    text-rendering: geometricPrecision;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #080808;
+    color: #f5f5f5;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+  /* Custom Stark Mechanical Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #080808;
+    border-left: 1px solid #2e2e2e;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #404040;
+    border-radius: 0;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #ffffff;
+  }
+}
+
+/* Halftone dot-grid background utility: 1px dots spaced 8px apart at 15% opacity */
+.bg-halftone {
+  background-color: #080808;
+  background-image: radial-gradient(rgba(245, 245, 245, 0.15) 1px, transparent 1px);
+  background-size: 8px 8px;
+}
+
+/* Dense technical halftone pattern */
+.bg-halftone-dense {
+  background-color: #080808;
+  background-image: radial-gradient(rgba(245, 245, 245, 0.22) 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+
+/* Hairline border utilities */
+.border-hairline {
+  border: 1px solid #2e2e2e;
+}
+
+.border-hairline-bright {
+  border: 1px solid #404040;
+}
+
+.border-hairline-t {
+  border-top: 1px solid #2e2e2e;
+}
+
+.border-hairline-b {
+  border-bottom: 1px solid #2e2e2e;
+}
+
+.border-hairline-l {
+  border-left: 1px solid #2e2e2e;
+}
+
+.border-hairline-r {
+  border-right: 1px solid #2e2e2e;
+}
+
+/* Snappy, mechanical animations */
+.transition-mechanical {
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-duration: 180ms;
+}
+
+/* Instant hover inversion - 0 delay */
+.invert-hover {
+  transition: none !important;
+}
+
+.invert-hover:hover {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.invert-hover:hover * {
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+
+/* Blinking Pixel LED */
+@keyframes pixel-blink {
+  0%, 49% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
+.animate-pixel-blink {
+  animation: pixel-blink 1.2s steps(1, start) infinite;
+}
+
+/* Corner Crosshair Decoration */
+.crosshair-corner {
+  position: relative;
+}
+
+.crosshair-corner::before,
+.crosshair-corner::after {
+  content: '+';
+  position: absolute;
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+  font-size: 11px;
+  line-height: 1;
+  color: #555555;
+  pointer-events: none;
+  user-select: none;
+}
+
+.crosshair-corner::before {
+  top: -6px;
+  left: -4px;
+}
+
+.crosshair-corner::after {
+  bottom: -6px;
+  right: -4px;
+}

@@ -1,0 +1,230 @@
+---
+// ArchiveList.astro - Swiss Brutalist Technical Ledger & Code Archive
+const archiveItems = [
+  {
+    id: "ARC.01",
+    tag: "CONCURRENCY",
+    title: "OS WORKER THREAD SPAWNING",
+    desc: "Fire-and-forget OS threads via the spawn() runtime intrinsic. Bypasses green thread scheduler overhead.",
+    status: "STABLE",
+    code: `// Fire a background OS worker thread instantly
+spawn(fn() {
+  let result = heavy_computation(1000000)
+  println("Background crunch completed: " + result)
+})
+
+println("Main thread continues unblocked")`
+  },
+  {
+    id: "ARC.02",
+    tag: "NETWORKING",
+    title: "BUILT-IN ZERO-CEREMONY HTTP DAEMON",
+    desc: "Production-ready HTTP server initialization in 5 lines with native JSON serialization.",
+    status: "STABLE",
+    code: `// Spin up HTTP server on port 8080 with zero third-party packages
+let app = server(8080)
+
+app.get("/health", fn(req) {
+  return json({ status: "alive", kernel: "shae_0.1.0", uptime: uptime() })
+})
+
+app.start()`
+  },
+  {
+    id: "ARC.03",
+    tag: "DATA PIPELINE",
+    title: "FUNCTIONAL PIPE OPERATOR (|&gt;)",
+    desc: "Elixir-style left-to-right function chaining without nested parenthesis pyramid.",
+    status: "VERIFIED",
+    code: `// Elegant left-to-right data pipeline
+let clean_names = users
+  |> filter(fn(u) { u.active == true })
+  |> map(fn(u) { u.name.to_uppercase() })
+  |> sort()
+
+println(clean_names)`
+  },
+  {
+    id: "ARC.04",
+    tag: "TYPE SYSTEM",
+    title: "STRUCT DEFINITION &amp; PATTERN MATCHING",
+    desc: "First-class strict data shapes with Rust-grade exhaustive match expressions.",
+    status: "STABLE",
+    code: `struct Payload {
+  event,
+  level,
+  data
+}
+
+match payload.level {
+  "critical" => trigger_pager(payload.event)
+  "warning"  => log_warning(payload.data)
+  _          => log_info("Standard event pass")
+}`
+  },
+  {
+    id: "ARC.05",
+    tag: "SAFETY",
+    title: "TRY/CATCH PANIC SHIELD",
+    desc: "Isolated failure domains preventing catastrophic server crashes with human stack traces.",
+    status: "SHIPPED",
+    code: `try {
+  let file = read_file("telemetry_log.bin")
+  parse_packet(file)
+} catch err {
+  println("Controlled failure caught: " + err.message)
+}`
+  },
+  {
+    id: "ARC.06",
+    tag: "LINTER",
+    title: "SHAE CHECK STATIC DIAGNOSTICS",
+    desc: "Empathetic, clear static linter explaining root causes instead of condescending lectures.",
+    status: "ONLINE",
+    code: `$ shae check main.shae
+[✓] Syntax tree valid
+[✓] Unused variables: 0
+[!] Warning on L14: variable 'temp' is reassigned but never read.
+    Tip: prefix with '_' if intentional: '_temp'`
+  }
+];
+---
+
+<section id="archive" class="relative w-full border-b border-[#2E2E2E] bg-[#080808]" aria-labelledby="archive-heading">
+  <!-- Crosshairs -->
+  <span class="absolute top-2 left-2 font-mono text-xs text-[#555555] select-none pointer-events-none" aria-hidden="true">+</span>
+  <span class="absolute top-2 right-2 font-mono text-xs text-[#555555] select-none pointer-events-none" aria-hidden="true">+</span>
+  <span class="absolute bottom-2 left-2 font-mono text-xs text-[#555555] select-none pointer-events-none" aria-hidden="true">+</span>
+  <span class="absolute bottom-2 right-2 font-mono text-xs text-[#555555] select-none pointer-events-none" aria-hidden="true">+</span>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+    <!-- Section Header -->
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-[#2E2E2E] pb-6 mb-8 gap-4">
+      <div>
+        <div class="font-mono text-xs tracking-widest uppercase text-[#888888] mb-1">
+          [SECTION // 03] // SYSTEM REGISTRY &amp; SPEC ARCHIVE
+        </div>
+        <h2 id="archive-heading" class="text-3xl sm:text-4xl md:text-5xl font-black font-sans uppercase tracking-tightest text-[#F5F5F5]">
+          ARCHIVE INDEX // 2026
+        </h2>
+      </div>
+      <div class="font-mono text-xs tracking-widest text-[#777777] uppercase">
+        TOTAL ENTRIES: 06 // TYPE: MONO_LEDGER
+      </div>
+    </div>
+
+    <!-- Ledger Table Header -->
+    <div class="hidden md:grid grid-cols-12 border-t border-x border-[#2E2E2E] bg-[#121212] font-mono text-xs tracking-widest uppercase text-[#888888] p-3">
+      <div class="col-span-2">REF_ID</div>
+      <div class="col-span-2">CATEGORY</div>
+      <div class="col-span-5">SPECIFICATION TITLE</div>
+      <div class="col-span-2">STATUS</div>
+      <div class="col-span-1 text-right">ACTION</div>
+    </div>
+
+    <!-- Ledger Items -->
+    <div class="border border-[#2E2E2E] divide-y divide-[#2E2E2E] bg-[#0A0A0A]">
+      {archiveItems.map((item, idx) => (
+        <div class="archive-row group" data-idx={idx}>
+          <!-- Row Summary Bar -->
+          <div class="grid grid-cols-1 md:grid-cols-12 items-center p-4 sm:p-5 font-mono text-xs hover:bg-[#FFFFFF] hover:text-[#000000] cursor-pointer transition-none select-none">
+            <div class="md:col-span-2 flex items-center gap-2 mb-2 md:mb-0">
+              <span class="text-[#F5F5F5] group-hover:text-[#000000] font-bold">[{item.id}]</span>
+              <span class="text-[#666666] group-hover:text-[#333333]">//</span>
+            </div>
+
+            <div class="md:col-span-2 mb-1 md:mb-0">
+              <span class="px-2 py-0.5 border border-[#333333] group-hover:border-[#000000] text-[#AAAAAA] group-hover:text-[#000000] text-[10px] tracking-widest uppercase font-bold">
+                {item.tag}
+              </span>
+            </div>
+
+            <div class="md:col-span-5 mb-2 md:mb-0">
+              <h3 class="font-sans font-bold text-sm sm:text-base text-[#F5F5F5] group-hover:text-[#000000] tracking-tight">
+                {item.title}
+              </h3>
+              <p class="font-sans text-xs text-[#888888] group-hover:text-[#333333] tracking-normal mt-0.5">
+                {item.desc}
+              </p>
+            </div>
+
+            <div class="md:col-span-2 mb-2 md:mb-0">
+              <span class="inline-flex items-center gap-1.5 text-[11px] text-[#DDDDDD] group-hover:text-[#000000] font-bold">
+                <span class="w-1.5 h-1.5 bg-[#F5F5F5] group-hover:bg-[#000000] inline-block"></span>
+                {item.status}
+              </span>
+            </div>
+
+            <div class="md:col-span-1 text-left md:text-right">
+              <span class="archive-toggle-text inline-block border border-[#404040] group-hover:border-[#000000] px-2 py-0.5 text-[10px] tracking-widest text-[#F5F5F5] group-hover:text-[#000000] font-bold">
+                [EXPAND]
+              </span>
+            </div>
+          </div>
+
+          <!-- Collapsible Code Drawer -->
+          <div class="archive-drawer hidden bg-[#050505] border-t border-[#222222] p-4 sm:p-6">
+            <div class="flex items-center justify-between pb-3 mb-3 border-b border-[#1A1A1A] font-mono text-[11px] tracking-widest uppercase text-[#888888]">
+              <div class="flex items-center gap-2">
+                <span>SHAE CODE REPRODUCTION // {item.id}</span>
+              </div>
+              <button
+                class="copy-code-btn px-2 py-0.5 border border-[#333333] text-[#F5F5F5] hover:bg-white hover:text-black transition-none text-[10px] uppercase font-bold"
+                data-code={item.code}
+              >
+                COPY SNIPPET
+              </button>
+            </div>
+            <pre class="font-mono text-xs sm:text-sm text-[#E0E0E0] overflow-x-auto p-4 bg-[#080808] border border-[#222222] leading-relaxed"><code>{item.code}</code></pre>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  // Collapsible drawers in archive ledger
+  function initArchiveLedger() {
+    const rows = document.querySelectorAll('.archive-row');
+
+    rows.forEach(row => {
+      const summaryBar = row.querySelector('.grid');
+      const drawer = row.querySelector('.archive-drawer');
+      const toggleText = row.querySelector('.archive-toggle-text');
+
+      summaryBar?.addEventListener('click', (e) => {
+        // Prevent toggle if clicking copy button
+        if ((e.target as HTMLElement).closest('.copy-code-btn')) return;
+
+        const isHidden = drawer?.classList.contains('hidden');
+        if (isHidden) {
+          drawer?.classList.remove('hidden');
+          if (toggleText) toggleText.textContent = '[COLLAPSE]';
+        } else {
+          drawer?.classList.add('hidden');
+          if (toggleText) toggleText.textContent = '[EXPAND]';
+        }
+      });
+    });
+
+    // Copy buttons
+    const copyBtns = document.querySelectorAll('.copy-code-btn');
+    copyBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const code = btn.getAttribute('data-code') || '';
+        navigator.clipboard.writeText(code).then(() => {
+          const original = btn.textContent;
+          btn.textContent = 'COPIED!';
+          setTimeout(() => {
+            btn.textContent = original;
+          }, 1500);
+        });
+      });
+    });
+  }
+
+  initArchiveLedger();
+  document.addEventListener('astro:page-load', initArchiveLedger);
+</script>
